@@ -18,6 +18,7 @@ async function getToken () {
     }
 };
 
+//get character info
 async function getChar () {
         try {
           await blizzard.getApplicationToken()
