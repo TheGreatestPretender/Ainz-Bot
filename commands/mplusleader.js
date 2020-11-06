@@ -1,4 +1,5 @@
 const fetch = require('node-fetch');
+const {convertArrayToObj} = require('../utils/utils');
 
 module.exports = {
     name: 'mplus',
@@ -12,15 +13,20 @@ module.exports = {
         .then(res => res.json())
         .then(data => {
             let runInfo = data.mythic_plus_recent_runs;
-            let runArr = [];
+            let dungeon = [];
+            let mLevel = [];
+            let score = [];
 
             for(let props in runInfo){
-                runArr.push(runInfo[props].dungeon)
-                runArr.push(runInfo[props].mythic_level)
-                runArr.push(runInfo[props].score)
+                dungeon.push(runInfo[props].dungeon);
+                mLevel.push(runInfo[props].mythic_level);
+                score.push(runInfo[props].score);
             }
-            console.log(runArr);
-            message.channel.send(runArr);
+
+            message.channel.send(`${charName}'s Top Three Mythic Plus runs this week: 
+                                                    \nDungeon: ${dungeon[0]}, Level: ${mLevel[0]}, Raider.IO Score: ${score[0]}
+                                                    \nDungeon: ${dungeon[1]}, Level: ${mLevel[1]}, Raider.IO Score: ${score[1]}
+                                                    \nDungeon: ${dungeon[2]}, Level: ${mLevel[2]}, Raider.IO Score: ${score[2]}`);
         })
         .catch (err => console.error(err));
     }
