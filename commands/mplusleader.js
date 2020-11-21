@@ -23,10 +23,15 @@ module.exports = {
                 score.push(runInfo[props].score);
             }
 
-            message.channel.send(`${charName}'s Top Three Mythic Plus runs this week: 
+            if (dungeon || mLevel || score === 'undefined') {
+                message.channel.send(`It doesn't look like ${charName} on ${serverName} did any mythic plus' this week. Get better :heart:`);
+            }
+            else {
+                message.channel.send(`${charName}'s Top Three Mythic Plus runs this week: 
                                                     \nDungeon: ${dungeon[0]}, Level: ${mLevel[0]}, Raider.IO Score: ${score[0]}
                                                     \nDungeon: ${dungeon[1]}, Level: ${mLevel[1]}, Raider.IO Score: ${score[1]}
                                                     \nDungeon: ${dungeon[2]}, Level: ${mLevel[2]}, Raider.IO Score: ${score[2]}`);
+            }
         })
         .catch (err => console.error(err));
     }
