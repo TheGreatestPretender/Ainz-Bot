@@ -1,6 +1,6 @@
 const fs = require('fs');
 const Discord = require('discord.js');
-const { prefix, token } = require('./config');
+const {prefix, token} = require('./config');
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -15,14 +15,13 @@ for (const file of commandFiles) {
 const cooldowns = new Discord.Collection();
 
 client.once('ready', () => {
-	console.log('Sebas bot online...');
+	console.log('Sebas 2.0 online ! 🧑‍💻');
 });
 
-
-client.on('message', async message => {
+client.on('message', message => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
-	const args = message.content.slice(prefix.length).split(/ +/);
+	const args = message.content.slice(prefix.length).trim().split(/ +/);
 	const commandName = args.shift().toLowerCase();
 
 	const command = client.commands.get(commandName)
@@ -30,7 +29,7 @@ client.on('message', async message => {
 
 	if (!command) return;
 
-	if (command.guildOnly && message.channel.type !== 'text') {
+	if (command.guildOnly && message.channel.type === 'dm') {
 		return message.reply('I can\'t execute that command inside DMs!');
 	}
 
@@ -52,21 +51,12 @@ client.on('message', async message => {
 	const timestamps = cooldowns.get(command.name);
 	const cooldownAmount = (command.cooldown || 3) * 1000;
 
-	if (!message.member.voiceChannel === 'General') {
-		return console.error('no such channel br0h');
-	}
-
 	if (timestamps.has(message.author.id)) {
 		const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
 
 		if (now < expirationTime) {
-			channel.join().then(
-				con => {
-					console.log('it worked');
-				}).catch (e => console.error(e));
 			const timeLeft = (expirationTime - now) / 1000;
-
-			return message.reply(`Please wait your impatient ass, ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
+			return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
 		}
 	}
 
@@ -77,7 +67,7 @@ client.on('message', async message => {
 		command.execute(message, args);
 	} catch (error) {
 		console.error(error);
-		message.reply('There was an error executing that command!');
+		message.reply('there was an error trying to execute that command!');
 	}
 });
 
