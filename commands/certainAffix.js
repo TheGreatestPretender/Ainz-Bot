@@ -74,7 +74,11 @@ module.exports = {
       overflowing: {
         'description': 'Healing in excess of target\'s maximum health is instead converted to a heal absorption effect',
         'level': 7,
-    }
+      },
+      prideful: {
+        'description': 'Players overflow with pride as they defeat non-boss enemies, eventually forming a Manifestation of Pride. Defeating this Manifestation greatly empowers players.',
+        'level': 10
+      }
     };
 
     let affix = args[0].toLowerCase();
