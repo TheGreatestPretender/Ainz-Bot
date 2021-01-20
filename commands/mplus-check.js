@@ -1,4 +1,5 @@
 const fetch = require('node-fetch');
+const {makeDateReadable} = require('../utils/utils')
 
 module.exports = {
 	name: 'mplus-check',
@@ -26,14 +27,16 @@ module.exports = {
 					const level = runObj[i].mythic_level;
 					const upgrade = runObj[i].num_keystone_upgrades;
 					const score = runObj[i].score;
-					const daysCompleted = runObj[i].completed_at;
+					const daysCompleted = makeDateReadable(runObj[i].completed_at);
 						if (upgrade > 0) {
 							message.channel.send(`${character} completed ${dungeon} at mythic level ${level} on ${daysCompleted}. The key ended up getting upgrade by ${upgrade} and the raider.io score was ${score}`);
-						break;
+
+							break;
 						}
 				}
 			} else {
 				message.channel.send(`${message.author} heres a thought... how about instead of sending me commands, you just go do one mythic plus on time so you can get phat lewts on Tuesdays? kthxbye`);
+				
 			}
 		});
 	}
