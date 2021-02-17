@@ -78,7 +78,19 @@ module.exports = {
       prideful: {
         'description': 'Players overflow with pride as they defeat non-boss enemies, eventually forming a Manifestation of Pride. Defeating this Manifestation greatly empowers players.',
         'level': 10
-      }
+      },
+      inspiring: {
+        'description': 'Inspires allies within 15 yards, granting them immunity to crowd control effects.',
+        'level': 4
+      },
+      spiteful: {
+        'description': 'Fiends rise from the corpses of non-boss enemies and pursue random players',
+        'level': 4
+      },
+      storming: {
+        'description': 'While in combat, enemies periodically summon damaging whirlwinds',
+        'level': 7
+      },
     };
 
     let affix = args[0].toLowerCase();
