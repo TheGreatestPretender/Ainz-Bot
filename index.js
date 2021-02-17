@@ -68,23 +68,61 @@ client.once('ready', () => {
 
 		timestamps.set(message.author.id, now);
 		setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
-
+		
+		//Logger
+		// TO-DO: 
+			//add this to the utils maybe?
+			//minimize put logstatement: instead of copying code again just to change resp to false
+		let logStatement = {};
 		try {
 			command.execute(message, args);
-
-		//log successfully commands to "Logger" table in dynamo
-			let logStatement = {
+			//log successful commands to "Logger" table in dynamo
+			logStatement = {
 				"command": commandName,
-				"user": message.author,
-				"response": command.execute(message.args),
-				"backendResp": true,
+				'args': args != null ? args : '',
+				"user": message.author.username,
+				"resp": true,
 				"timestamp": now,
+				"id": randU32Sync()
 			}
-			console.log(logStatement);
+
+			let params = {
+				TableName: 'Logger',
+				Item: logStatement
+			};
+			//adding to dynamo table
+			docClient.put(params, (err) => {
+				if (err)  {
+					console.log('Error logging command - ' + JSON.stringify(err, null, 2));
+				} else {
+					console.log('Command successfully logged');
+				}
+			});
+			
 		} catch (error) {
 			console.error(error);
+			logStatement = {
+				"command": commandName,
+				"args": args != null ? args : '',
+				"user": message.author.username,
+				"resp": false,
+				"timestamp": now,
+				"id": randU32Sync()
+			}
+
+			let params = {
+				TableName: 'Logger',
+				Item: logStatement
+			};
+			//adding to dynamo table
+			docClient.put(params, (err) => {
+				if (err)  {
+					console.log('Error logging command - ' + JSON.stringify(err, null, 2));
+				} else {
+					console.log('Command successfully logged');
+				}
+			});
 			message.reply('there was an error trying to execute that command!');
-		
 		}
 		globalMessage = message;
 	});
